@@ -9,9 +9,10 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchMovies() {
-      let movies = [];
+      const movies = new Map();
       let page = 1;
       let fin = false;
+
       try {
         while (!fin) {
           const response = await fetch(
@@ -19,7 +20,12 @@ export default function Home() {
           );
           const data = await response.json();
 
-          movies = movies.concat(data);
+          // Valido si tengo duplicados
+          data.forEach((movie) => {
+            if (movie._id && !movies.has(movie._id)) {
+              movies.set(movie._id, movie);
+            }
+          });
 
           if (data.length < 30) {
             fin = true;
@@ -28,7 +34,8 @@ export default function Home() {
           }
         }
 
-        const top = movies
+        // Filtro top 10
+        const top = Array.from(movies.values())
           .filter((movie) => movie.imdb?.rating)
           .sort((a, b) => b.imdb.rating - a.imdb.rating)
           .slice(0, 10);
@@ -46,6 +53,10 @@ export default function Home() {
 
   return (
     <main className="container mx-auto p-4">
+      <h2 className="text-2xl font-bold text-blue-700 mb-4">
+        Top 10 películas según IMDb
+      </h2>
+
       {loading ? (
         <p>Cargando películas...</p>
       ) : (

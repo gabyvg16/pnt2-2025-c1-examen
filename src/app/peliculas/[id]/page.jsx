@@ -39,24 +39,22 @@ export default function MovieDetailPage() {
   }
 
   return (
-    <div>
-      <h1>{movie.title}</h1>
+    <main className="max-w-2xl mx-auto p-4 bg-white shadow-md rounded-md">
+      <h1 className="text-2xl font-bold mb-4 text-blue-700">{movie.title}</h1>
       {movie.poster && !imageError ? (
         <img
           src={movie.poster}
           alt={movie.title}
-          className="w-full h-[135px] object-cover rounded-md"
+          className="w-full h-auto object-contain mb-4 rounded-md"
           onError={handleImageError}
         />
       ) : (
-        <div className="w-full h-[135px] bg-gray-300 rounded-md flex items-center justify-center">
-          <span className="text-xs text-gray-600 text-center">
-            {movie.title}
-          </span>
+        <div className="w-full h-[200px] bg-gray-300 rounded-md flex items-center justify-center mb-4">
+          <span className="text-gray-600">{movie.title}</span>
         </div>
       )}
       {/* Fullplot */}
-      <p className="text-xs mt-1 truncate">{movie.fullplot}</p>
-    </div>
+      <p className="mb-4 text-sm text-gray-800">{movie.fullplot}</p>
+    </main>
   );
 }
